@@ -18,8 +18,8 @@ Team meeting room is **202-C**.
  - PyCharm Community Edition - [Install](https://www.jetbrains.com/pycharm/download/)
 
 # Viewing Data
- - Spencer made a viewer script to preview a TIFF file.
-   Usage: `python3 data_viewer.py <file>`
+ - Spencer made a viewer script to preview a TIFF file. \
+   Usage: `python3 data_viewer.py <file>` \
    Example: `python3 data_viewer.py data/Appalachian_State_0.1deg.tiff`
 
 # Getting Started
