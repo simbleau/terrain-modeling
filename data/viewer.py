@@ -8,7 +8,6 @@ if len(sys.argv) != 2:
     sys.exit(1)
 
 path = sys.argv[1]
-print(path)
 x = plt.imread(path)
 plt.imshow(x)
 plt.colorbar()
