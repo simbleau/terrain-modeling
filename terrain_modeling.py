@@ -23,9 +23,6 @@ def run():
         input_path = input_folder + file
         output_path = output_folder + file + '.h5'
 
-        # To enable periodic saving checkpoints: (disabled)
-        #model_checkpoint = setup_model_checkpoints(output_path, save_freq='epoch')
-
         x, y = get_xy(input_path)
 
         keras.backend.clear_session()
