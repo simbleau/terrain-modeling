@@ -20,8 +20,11 @@ def run():
 
     # linear regression
     model = Sequential()
-    model.add(Input(2))
-    model.add(Dense(1, activation='linear'))
+    model.add(Input(2))                         # 2 inputs: (x, y)
+    model.add(Dense(10, activation='relu'))
+    model.add(Dense(10, activation='relu'))
+    model.add(Dense(10, activation='relu'))
+    model.add(Dense(1, activation='linear'))    # 1 output: height (estimated)
     # Initially the network outputs values centered at zero
     # Add the mean elevation to start near the solution
     y_mean = y.mean()
