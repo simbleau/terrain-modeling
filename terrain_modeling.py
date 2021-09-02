@@ -35,7 +35,7 @@ def run():
 
     print_error(y, y.mean(), 1, 'Constant')
 
-    model.fit(x, y, batch_size=64, verbose=1, callbacks=[model_checkpoint])
+    model.fit(x, y, batch_size=64, verbose=1, callbacks=[model_checkpoint], epochs=3)
     compare_images(model, x, y, output_path)
 
 
