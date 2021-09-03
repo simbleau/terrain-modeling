@@ -22,5 +22,12 @@ Team meeting room is **202-C**.
    Usage: `python3 data_viewer.py <file>` \
    Example: `python3 data_viewer.py data/Appalachian_State_0.1deg.tiff`
 
+# Submitting models
+ - For fastest testing, lower the epochs and increase the batch size.
+ - If the conda environment has never been created: ` conda env create -f cs5440.yml`
+ - Activating the conda environment: `conda activate cs5440`
+ - Program run: `conda python3 terrain_modeling.py`
+ - Zipping the artifacts for submission: `zip -r submission.zip output/`
+
 # Getting Started
  - Nothing to report yet.
