@@ -36,19 +36,18 @@ def run():
         model.add(Input(2))  # 2 inputs: (x, y)
         model.add(Dense(10, activation='relu'))
         model.add(Dense(10, activation='relu'))
-        model.add(Dense(10, activation='relu'))
         model.add(Dense(1, activation='linear'))  # 1 output: height (estimated)
         # Initially the network outputs values centered at zero
         # Add the mean elevation to start near the solution
         y_mean = y.mean()
         model.add(Lambda(lambda v: v + y_mean))
 
-        model.compile(loss='mean_squared_error', optimizer='adam', metrics=[Entropy()])
+        model.compile(loss='mean_absolute_error', optimizer='adam', metrics=[Entropy()])
         model.summary()
 
         print_error(y, y.mean(), 1, 'Constant')
 
-        model.fit(x, y, batch_size=64, verbose=1, epochs=1)
+        model.fit(x, y, batch_size=128, verbose=1, epochs=10)
         save_model(model, output_path)
         compare_images(model, x, y, output_path)
 
