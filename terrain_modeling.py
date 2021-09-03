@@ -33,17 +33,14 @@ def run():
 
         # linear regression
         model = Sequential()
-        model.add(Input(2))  # 2 inputs: (x, y)
-        model.add(Dense(10, activation='relu'))
-        model.add(Dense(10, activation='relu'))
-        model.add(Dense(10, activation='relu'))
-        model.add(Dense(1, activation='linear'))  # 1 output: height (estimated)
+        model.add(Input(2))                             # 2 inputs: (x, y)
+        model.add(Dense(1, activation='linear'))        # 1 output: height (estimated)
         # Initially the network outputs values centered at zero
         # Add the mean elevation to start near the solution
         y_mean = y.mean()
         model.add(Lambda(lambda v: v + y_mean))
 
-        model.compile(loss='mean_squared_error', optimizer='adam', metrics=[Entropy()])
+        model.compile(loss='mean_squared_error', optimizer='sgd', metrics=[Entropy()])
         model.summary()
 
         print_error(y, y.mean(), 1, 'Constant')
