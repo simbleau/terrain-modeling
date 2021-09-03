@@ -45,7 +45,7 @@ def run():
 
         print_error(y, y.mean(), 1, 'Constant')
 
-        model.fit(x, y, batch_size=64, verbose=1, epochs=1)
+        model.fit(x, y, batch_size=32, verbose=1, epochs=1)
         save_model(model, output_path)
         compare_images(model, x, y, output_path)
 
