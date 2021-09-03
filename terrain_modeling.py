@@ -1,6 +1,6 @@
 # Pseudo code for the program operation:
 from helper_methods import *
-
+import sys
 
 def run():
     from tensorflow.keras.models import Sequential
@@ -17,6 +17,10 @@ def run():
                   'NC_Coast_1.0deg.tiff',
                   'NC_Coast_2.0deg.tiff',
                   'NC_Coast_3.0deg.tiff']
+
+    # Only render 1 file if asked to
+    if len(sys.argv) == 2:
+        tiff_files = [sys.argv[1]]
 
     for file in tiff_files:
         print(f"Working on file: {file}")
