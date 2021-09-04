@@ -1,4 +1,3 @@
-# Pseudo code for the program operation:
 from helper_methods import *
 import sys
 
@@ -23,15 +22,17 @@ def run():
         tiff_files = [sys.argv[1]]
 
     for file in tiff_files:
+        # Clear backend for new file
+        keras.backend.clear_session()
+
         print(f"Working on file: {file}")
         input_path = input_folder + file
         output_path = output_folder + file + '.h5'
 
+        # Get x and y
         x, y = get_xy(input_path)
 
-        keras.backend.clear_session()
-
-        # linear regression
+        # Linear Regression
         model = Sequential()
         model.add(Input(2))                             # 2 inputs: (x, y)
         model.add(Dense(1, activation='linear'))        # 1 output: height (estimated)
@@ -40,12 +41,16 @@ def run():
         y_mean = y.mean()
         model.add(Lambda(lambda v: v + y_mean))
 
-        model.compile(loss='mean_squared_error', optimizer='sgd', metrics=[Entropy()])
+        from tensorflow_core.python.keras.optimizers import SGD
+        sgd = SGD(clipvalue=1)
+        model.optimizer = sgd
+        model.compile(loss='mean_squared_error', metrics=[Entropy()])
         model.summary()
 
         print_error(y, y.mean(), 1, 'Constant')
 
-        model.fit(x, y, batch_size=32, verbose=1, epochs=1)
+        model.fit(x, y, batch_size=128, verbose=1, epochs=1)
+
         save_model(model, output_path)
         compare_images(model, x, y, output_path)
 
