@@ -172,7 +172,7 @@ def compare_images(model, x, y, output_path):
     ax2 = fig.add_axes([0.85, 0.15, 0.05, 0.7])
     fig.colorbar(im1, cax=ax2)
 
-    plt.savefig(output_path + '.png')
+    plt.savefig(os.path.join(output_path, 'result.png'))
 
 
 class Entropy(keras.metrics.Metric):
