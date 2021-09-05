@@ -1,10 +1,12 @@
+# Pseudo code for the program operation:
 from helper_methods import *
 import sys
 
-def run():
-    from tensorflow.keras.models import Sequential
-    from tensorflow.keras.layers import Input, Dense, Lambda
+from tensorflow.keras.optimizers import *
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Input, Dense, Lambda
 
+def run():
     output_folder = 'output/'
     input_folder = 'terrain/'
     tiff_files = ['Appalachian_State_0.1deg.tiff',
@@ -34,23 +36,25 @@ def run():
 
         # Linear Regression
         model = Sequential()
-        model.add(Input(2))                             # 2 inputs: (x, y)
+        model.add(Input(2))         # 2 inputs: (x, y)
+        model.add(Dense(50, activation='tanh'))        # 1 output: height (estimated)
+        model.add(Dense(40, activation='tanh'))        # 1 output: height (estimated)
         model.add(Dense(1, activation='linear'))        # 1 output: height (estimated)
         # Initially the network outputs values centered at zero
         # Add the mean elevation to start near the solution
         y_mean = y.mean()
         model.add(Lambda(lambda v: v + y_mean))
 
-        from tensorflow_core.python.keras.optimizers import SGD
         sgd = SGD(clipvalue=1)
-        model.optimizer = sgd
-        model.compile(loss='mean_squared_error', metrics=[Entropy()])
+        adam = Adamax()
+
+        model.optimizer = adam
+        model.compile(loss='mean_absolute_error', metrics=[Entropy()])
         model.summary()
 
         print_error(y, y.mean(), 1, 'Constant')
 
-        model.fit(x, y, batch_size=128, verbose=1, epochs=1)
-
+        model.fit(x, y, batch_size=128, verbose=1, epochs=20)
         save_model(model, output_path)
         compare_images(model, x, y, output_path)
 
