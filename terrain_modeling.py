@@ -9,6 +9,7 @@ from tensorflow.keras.models import *
 from tensorflow.keras.layers import *
 from tensorflow.config.experimental import list_physical_devices
 
+
 def run():
     print("Num GPUs Available: ", len(list_physical_devices('GPU')))
 
