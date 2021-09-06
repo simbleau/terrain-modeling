@@ -1,6 +1,9 @@
 from helper_methods import *
 import sys
 
+from tensorflow.keras.optimizers import *
+from tensorflow.keras.losses import *
+
 def run():
     from tensorflow.keras.models import Sequential
     from tensorflow.keras.layers import Input, Dense, Lambda
@@ -35,21 +38,30 @@ def run():
         # Linear Regression
         model = Sequential()
         model.add(Input(2))                             # 2 inputs: (x, y)
+        model.add(Dense(30, activation='tanh'))
+        model.add(Dense(20, activation='tanh'))
+        model.add(Dense(10, activation='tanh'))
         model.add(Dense(1, activation='linear'))        # 1 output: height (estimated)
         # Initially the network outputs values centered at zero
         # Add the mean elevation to start near the solution
         y_mean = y.mean()
         model.add(Lambda(lambda v: v + y_mean))
 
-        from tensorflow_core.python.keras.optimizers import SGD
+        # Loss functions
+        mse = MeanSquaredError()
+        mae = MeanAbsoluteError()
+
+        # Optimizers
         sgd = SGD(clipvalue=1)
-        model.optimizer = sgd
-        model.compile(loss='mean_squared_error', metrics=[Entropy()])
+        adamx = Adamax(learning_rate=0.0009)
+
+        # Compile
+        model.compile(optimizer=adamx, loss=mae, metrics=[Entropy()])
         model.summary()
 
         print_error(y, y.mean(), 1, 'Constant')
 
-        model.fit(x, y, batch_size=128, verbose=1, epochs=1)
+        model.fit(x, y, batch_size=128, verbose=1, epochs=10)
 
         save_model(model, output_path)
         compare_images(model, x, y, output_path)
