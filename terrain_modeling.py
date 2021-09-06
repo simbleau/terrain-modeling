@@ -3,11 +3,11 @@ import sys
 
 from tensorflow.keras.optimizers import *
 from tensorflow.keras.losses import *
+from tensorflow.keras.models import *
+from tensorflow.keras.layers import *
+
 
 def run():
-    from tensorflow.keras.models import Sequential
-    from tensorflow.keras.layers import Input, Dense, Lambda
-
     output_folder = 'output/'
     input_folder = 'terrain/'
     tiff_files = ['Appalachian_State_0.1deg.tiff',
@@ -37,11 +37,13 @@ def run():
 
         # Linear Regression
         model = Sequential()
-        model.add(Input(2))                             # 2 inputs: (x, y)
-        model.add(Dense(30, activation='tanh'))
-        model.add(Dense(20, activation='tanh'))
-        model.add(Dense(10, activation='tanh'))
-        model.add(Dense(1, activation='linear'))        # 1 output: height (estimated)
+        # Input
+        model.add(Input(2))  # 2 inputs: (x, y)
+        # Layers
+        model.add(Dense(50, activation='tanh'))
+        model.add(Dense(40, activation='tanh'))
+        # Output Layer
+        model.add(Dense(1, activation='linear'))  # 1 output: height (estimated)
         # Initially the network outputs values centered at zero
         # Add the mean elevation to start near the solution
         y_mean = y.mean()
