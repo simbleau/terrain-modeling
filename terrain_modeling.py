@@ -3,15 +3,15 @@
 from helper_methods import *
 import sys
 
+import tensorflow
 from tensorflow.keras.optimizers import *
 from tensorflow.keras.losses import *
 from tensorflow.keras.models import *
 from tensorflow.keras.layers import *
-from tensorflow.config.experimental import list_physical_devices
 
 
 def run():
-    print("Num GPUs Available: ", len(list_physical_devices('GPU')))
+    print("Num GPUs Available: ", len(tensorflow.config.experimental.list_physical_devices('GPU')))
 
     output_folder = 'output/'
     input_folder = 'terrain/'
