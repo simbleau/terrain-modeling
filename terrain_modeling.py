@@ -4,9 +4,16 @@ import sys
 
 from tensorflow.keras.optimizers import *
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Input, Dense, Lambda
+from tensorflow.keras.layers import Input, Dense, Lambda, BatchNormalization
+
+from tensorflow.keras.mixed_precision import experimental as mixed_precision
 
 def run():
+    #policy = mixed_precision.Policy('mixed_float16')
+    #mixed_precision.set_policy(policy)
+
+    tf.config.optimizer.set_jit(True)
+
     output_folder = 'output/'
     input_folder = 'terrain/'
     tiff_files = ['Appalachian_State_0.1deg.tiff',
@@ -39,22 +46,31 @@ def run():
         model.add(Input(2))         # 2 inputs: (x, y)
         model.add(Dense(50, activation='tanh'))        # 1 output: height (estimated)
         model.add(Dense(40, activation='tanh'))        # 1 output: height (estimated)
-        model.add(Dense(1, activation='linear'))        # 1 output: height (estimated)
+        #model.add(Dense(40, activation='tanh'))        # 1 output: height (estimated)
+        model.add(Dense(1, activation='linear', dtype='float16'))        # 1 output: height (estimated)
         # Initially the network outputs values centered at zero
         # Add the mean elevation to start near the solution
         y_mean = y.mean()
         model.add(Lambda(lambda v: v + y_mean))
 
-        sgd = SGD(clipvalue=1)
-        adam = Adamax()
+        #sgd = SGD(clipvalue=1)
+        adamx = Adamax(learning_rate=0.0009)
+        #adam = Adam()
+        #nadam = Nadam()
+        #adagrad = tf.optimizers.Adagrad()
 
-        model.optimizer = adam
-        model.compile(loss='mean_absolute_error', metrics=[Entropy()])
+
+        loss_function = 'mean_absolute_error'
+        #loss_function = keras.losses.MeanSquaredLogarithmicError()
+        #loss_function = keras.losses.MeanAbsolutePercentageError()
+        #loss_function = keras.losses.SparseCategoricalCrossentropy(from_logits=True)
+        model.optimizer = adamx
+        model.compile(loss=loss_function, metrics=[Entropy()])
         model.summary()
 
         print_error(y, y.mean(), 1, 'Constant')
 
-        model.fit(x, y, batch_size=128, verbose=1, epochs=40)
+        model.fit(x, y, batch_size=128, verbose=1, epochs=200)
         save_model(model, output_path)
         compare_images(model, x, y, output_path)
 
