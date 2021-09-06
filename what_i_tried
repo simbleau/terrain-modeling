@@ -1,0 +1,86 @@
+10 Relu, 10 Relu, 1 Linear 8.716
+
+15 Relu, 10 Relu, 1 Linear 7.6918
+
+25 Relu, 15 Relu, 1 Linear 7.5477
+
+100 Relu, 50 Relu, 25 Relu, 1 Linear 8.8026 (Yikes)
+
+100 Relu, 80 Relu, 40 Relu, 1 Linear 6.7977 -12.80% improvement (YIKES)
+
+40 Relu, 60 Relu, 1 Linear, 20 epochs 8.01% 
+
+40 Relu, 50 Relu, 1 Linear, 20 epochs 8.01% 
+
+40 tanh, 50 tanh, 1 Linear, 20 epochs 9.86% mean absolute error
+
+55 tanh, 40 tanh, 1 linear, 20 epochs 10.95%
+
+60 tanh, 40 tanh, 1 linear, 20 epochs 9.47%
+
+55 tanh, 35 tanh, 1 linear, 20 epochs 8.10%
+
+50 tanh, 40 tanh, 1 linear, 20 epochs 11.16% adamax # can't reproduce result???????!??!!?!?
+
+50 tanh, 40 tanh, 1 tanh, 20 epochs -6.33%
+
+50 tanh, 40 tanh, 1 relu, 20 epochs 1.02%
+
+50 tanh, 40 tanh, 1 linear, 40 epochs 11.59%
+
+50 tanh, 40 tanh, 1 linear, 20 epochs 9.90% mean squared error
+
+50 tanh, 40 tanh, 1 linear, 20 epochs 8.40% mean absolute percentage error
+
+50 tanh, 40 tanh, 1 linear, 20 epochs 8.16% mean absolute error adam
+
+50 tanh, 40 tanh, 1 linear, 20 epochs 9.44%  nadam
+
+50 tanh, 40 tanh, 1 linear, 20 epochs 8.61%  Adagrad
+
+50 tanh, 40 tanh, 1 linear, 20 epochs 9.02%  adamax learn_rate = 0.01
+
+50 tanh, 40 tanh, 1 linear, 20 epochs 9.73%  adamax learn_rate = 0.0001
+
+50 tanh, 40 tanh, 1 linear, 20 epochs 10.99%  adamax learn_rate = 0.0009
+
+50 tanh, 40 tanh, 1 linear, 20 epochs 8.39%  adamax learn_rate = 0.0011
+
+50 tanh, 40 tanh, 1 linear, 20 epochs 9.89%  adamax learn_rate = 0.001
+
+50 tanh, 40 tanh, 1 linear, 20 epochs 8.93%  adamax learn_rate = 0.0008
+
+50 tanh, 40 tanh, 1 linear, 20 epochs 8.36%  adamax learn_rate = 0.00085
+
+50 tanh, 40 tanh, 1 linear, 20 epochs 10.67%  adamax learn_rate = 0.00095
+
+50 tanh, 40 tanh, 1 linear, 20 epochs 10.09%  adamax learn_rate = 0.00093
+
+50 tanh, 40 tanh, 1 linear, 20 epochs 10.47%  adamax learn_rate = 0.0009 batch_size 64 (prev 128)
+
+50 tanh, 40 tanh, 40 tanh, 1 linear, 20 epochs 5.11%  adamax learn_rate = 0.0009 batch_size 128
+
+60 tanh, 40 tanh, 40 tanh, 1 linear, 20 epochs 4.25%  adamax learn_rate = 0.0009 batch_size 128
+
+50 tanh, 40 tanh, BatchNorm, 1 linear, 20 epochs 10.35%  adamax learn_rate = 0.0009
+
+50 tanh, BatchNorm, 40 tanh, 1 linear, 20 epochs 8.73%  adamax learn_rate = 0.0009
+
+ BatchNorm, 50 tanh, 40 tanh, 1 linear, 20 epochs 7.44%  adamax learn_rate = 0.0009
+
+50 tanh, 40 tanh, 1 linear, 200 epochs 12.95%  adamax learn_rate = 0.0009
+
+50 tanh, 40 tanh, 30 tanh, 1 linear, 20 epochs 5.83%  adamax learn_rate = 0.0009
+
+50 tanh, 40 tanh, 20 tanh, 1 linear, 20 epochs 6.02%  adamax learn_rate = 0.0009
+
+50 tanh, 40 tanh, 10 tanh, 1 linear, 20 epochs 6.00%  adamax learn_rate = 0.0009
+
+50 tanh, 30 tanh, 10 tanh, 1 linear, 20 epochs 6.79%  adamax learn_rate = 0.0009
+
+40 tanh, 30 tanh, 10 tanh, 1 linear, 20 epochs 6.93%  adamax learn_rate = 0.0009
+
+50 tanh, 40 relu, 30 tanh, 20 tanh, 10 tanh, 1 linear, 20 epochs 5.36%  adamax learn_rate = 0.0009
+
+50 tanh, 40 tanh, 30 tanh, 20 tanh, 10 tanh, 1 linear, 20 epochs 2.51%  adamax learn_rate = 0.0009
+
