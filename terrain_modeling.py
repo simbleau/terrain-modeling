@@ -46,8 +46,7 @@ def run():
         model.add(Input(2))         # 2 inputs: (x, y)
         model.add(Dense(50, activation='tanh'))        # 1 output: height (estimated)
         model.add(Dense(40, activation='tanh'))        # 1 output: height (estimated)
-        #model.add(Dense(40, activation='tanh'))        # 1 output: height (estimated)
-        model.add(Dense(1, activation='linear', dtype='float16'))        # 1 output: height (estimated)
+        model.add(Dense(1, activation='linear'))        # 1 output: height (estimated)
         # Initially the network outputs values centered at zero
         # Add the mean elevation to start near the solution
         y_mean = y.mean()
@@ -70,7 +69,7 @@ def run():
 
         print_error(y, y.mean(), 1, 'Constant')
 
-        model.fit(x, y, batch_size=128, verbose=1, epochs=200)
+        model.fit(x, y, batch_size=128, verbose=1, epochs=20)
         save_model(model, output_path)
         compare_images(model, x, y, output_path)
 
