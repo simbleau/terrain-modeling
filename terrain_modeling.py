@@ -7,9 +7,11 @@ from tensorflow.keras.optimizers import *
 from tensorflow.keras.losses import *
 from tensorflow.keras.models import *
 from tensorflow.keras.layers import *
-
+from tensorflow.config.experimental import list_physical_devices
 
 def run():
+    print("Num GPUs Available: ", len(list_physical_devices('GPU')))
+
     output_folder = 'output/'
     input_folder = 'terrain/'
     tiff_files = ['Appalachian_State_0.1deg.tiff',
