@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 from helper_methods import *
 import sys
 
@@ -63,7 +65,7 @@ def run():
 
         print_error(y, y.mean(), 1, 'Constant')
 
-        model.fit(x, y, batch_size=128, verbose=1, epochs=10)
+        model.fit(x, y, batch_size=128, verbose=1, epochs=20)
 
         save_model(model, output_path)
         compare_images(model, x, y, output_path)
