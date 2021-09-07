@@ -8,9 +8,10 @@ from tensorflow.keras.layers import Input, Dense, Lambda, BatchNormalization
 
 from tensorflow.keras.mixed_precision import experimental as mixed_precision
 
+
 def run():
-    #policy = mixed_precision.Policy('mixed_float16')
-    #mixed_precision.set_policy(policy)
+    # policy = mixed_precision.Policy('mixed_float16')
+    # mixed_precision.set_policy(policy)
 
     tf.config.optimizer.set_jit(True)
 
@@ -43,27 +44,26 @@ def run():
 
         # Linear Regression
         model = Sequential()
-        model.add(Input(2))         # 2 inputs: (x, y)
-        model.add(Dense(50, activation='tanh'))        # 1 output: height (estimated)
-        model.add(Dense(40, activation='tanh'))        # 1 output: height (estimated)
-        model.add(Dense(1, activation='linear'))        # 1 output: height (estimated)
+        model.add(Input(2))  # 2 inputs: (x, y)
+        model.add(Dense(30, activation='relu'))  # 1 output: height (estimated)
+        model.add(Dense(30, activation='relu'))  # 1 output: height (estimated)
+        model.add(Dense(1, activation='linear'))  # 1 output: height (estimated)
         # Initially the network outputs values centered at zero
         # Add the mean elevation to start near the solution
         y_mean = y.mean()
         model.add(Lambda(lambda v: v + y_mean))
 
-        #sgd = SGD(clipvalue=1)
-        adamx = Adamax(learning_rate=0.0009)
-        #adam = Adam()
-        #nadam = Nadam()
-        #adagrad = tf.optimizers.Adagrad()
+        # optimizer = SGD(clipvalue=1)
+        optimizer = Adamax(learning_rate=0.0009)
+        # optimizer = Adam()
+        # optimizer = Nadam()
+        # optimizer = tf.optimizers.Adagrad()
 
-
-        loss_function = 'mean_absolute_error'
+        # loss_function = 'mean_absolute_error'
         #loss_function = keras.losses.MeanSquaredLogarithmicError()
-        #loss_function = keras.losses.MeanAbsolutePercentageError()
-        #loss_function = keras.losses.SparseCategoricalCrossentropy(from_logits=True)
-        model.optimizer = adamx
+        loss_function = keras.losses.MeanAbsolutePercentageError()
+        # loss_function = keras.losses.SparseCategoricalCrossentropy(from_logits=True)
+        model.optimizer = optimizer
         model.compile(loss=loss_function, metrics=[Entropy()])
         model.summary()
 

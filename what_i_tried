@@ -1,3 +1,4 @@
+# Appstate 0.1
 10 Relu, 10 Relu, 1 Linear 8.716
 
 15 Relu, 10 Relu, 1 Linear 7.6918
@@ -84,3 +85,6 @@
 
 50 tanh, 40 tanh, 30 tanh, 20 tanh, 10 tanh, 1 linear, 20 epochs 2.51%  adamax learn_rate = 0.0009
 
+Appstate 1.0
+
+30 relu, 30 relu, 1 linear, 20 epochs, 9.11%  Adamx learning_rate 0.0009 mean_absolute_percentage
