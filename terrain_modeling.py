@@ -45,8 +45,9 @@ def run():
         # Input
         model.add(Input(2))  # 2 inputs: (x, y)
         # Layers
-        model.add(Dense(50, activation='tanh'))
-        model.add(Dense(40, activation='tanh'))
+        model.add(Dense(30, activation='relu'))
+        model.add(Dense(30, activation='relu'))
+        model.add(Dense(30, activation='relu'))
         # Output Layer
         model.add(Dense(1, activation='linear'))  # 1 output: height (estimated)
         # Initially the network outputs values centered at zero
@@ -68,7 +69,7 @@ def run():
 
         print_error(y, y.mean(), 1, 'Constant')
 
-        model.fit(x, y, batch_size=128, verbose=1, epochs=20)
+        model.fit(x, y, batch_size=128, verbose=1, epochs=10)
 
         save_model(model, output_path)
         compare_images(model, x, y, output_path)
