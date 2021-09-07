@@ -54,14 +54,14 @@ def run():
         model.add(Lambda(lambda v: v + y_mean))
 
         # optimizer = SGD(clipvalue=1)
-        optimizer = Adamax(learning_rate=0.0009)
+        optimizer = Adamax()#learning_rate=0.0009)
         # optimizer = Adam()
         # optimizer = Nadam()
         # optimizer = tf.optimizers.Adagrad()
 
         # loss_function = 'mean_absolute_error'
-        #loss_function = keras.losses.MeanSquaredLogarithmicError()
-        loss_function = keras.losses.MeanAbsolutePercentageError()
+        loss_function = keras.losses.MeanSquaredLogarithmicError()
+        # loss_function = keras.losses.MeanAbsolutePercentageError()
         # loss_function = keras.losses.SparseCategoricalCrossentropy(from_logits=True)
         model.optimizer = optimizer
         model.compile(loss=loss_function, metrics=[Entropy()])
