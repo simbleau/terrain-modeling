@@ -23,7 +23,8 @@ def run():
                   'Grand_Canyon_2.0deg.tiff',
                   'NC_Coast_1.0deg.tiff',
                   'NC_Coast_2.0deg.tiff',
-                  'NC_Coast_3.0deg.tiff']
+                  'NC_Coast_3.0deg.tiff'
+                  ]
 
     # Only render 1 file if asked to
     if len(sys.argv) == 2:
@@ -45,9 +46,10 @@ def run():
         # Input
         model.add(Input(2))  # 2 inputs: (x, y)
         # Layers
-        model.add(Dense(30, activation='relu'))
-        model.add(Dense(30, activation='relu'))
-        model.add(Dense(30, activation='relu'))
+        # model.add(Dense(30, activation='relu'))
+        model.add(Dense(30, activation='softmax'))
+        model.add(Dense(10, activation='relu'))
+        model.add(Dense(5, activation='relu'))
         # Output Layer
         model.add(Dense(1, activation='linear'))  # 1 output: height (estimated)
         # Initially the network outputs values centered at zero
@@ -61,7 +63,7 @@ def run():
 
         # Optimizers
         sgd = SGD(clipvalue=1)
-        adamx = Adamax(learning_rate=0.0009)
+        adamx = Adamax(learning_rate=0.01)
 
         # Compile
         model.compile(optimizer=adamx, loss=mae, metrics=[Entropy()])
@@ -69,7 +71,7 @@ def run():
 
         print_error(y, y.mean(), 1, 'Constant')
 
-        model.fit(x, y, batch_size=128, verbose=1, epochs=10)
+        model.fit(x, y, batch_size=1024, verbose=1, epochs=25)
 
         save_model(model, output_path)
         compare_images(model, x, y, output_path)
