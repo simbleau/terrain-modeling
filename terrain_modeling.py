@@ -17,8 +17,8 @@ def run():
     input_folder = 'terrain/'
     tiff_files = [# 'Appalachian_State_0.1deg.tiff',
                   # 'Appalachian_State_1.0deg.tiff',
-                  'Appalachian_State_2.0deg.tiff',
-                  # 'Grand_Canyon_0.1deg.tiff',
+                  # 'Appalachian_State_2.0deg.tiff',
+                  'Grand_Canyon_0.1deg.tiff',
                   # 'Grand_Canyon_1.0deg.tiff',
                   # 'Grand_Canyon_2.0deg.tiff',
                   # 'NC_Coast_1.0deg.tiff',
@@ -46,13 +46,14 @@ def run():
         # Input
         model.add(Input(2))  # 2 inputs: (x, y)
         # Layers
-        # model.add(Dense(30, activation='relu'))
+        model.add(Dense(30, activation='relu'))
         # model.add(Dense(30, activation='softmax'))
         # model.add(Dense(10, activation='relu'))
         # model.add(Dense(5, activation='relu'))
         model.add(Dense(30, activation='tanh'))
-        model.add(Dense(10, activation='tanh'))
-        model.add(Dense(5, activation='linear'))
+        # model.add(Dense(10, activation='tanh'))
+        # model.add(Dense(5, activation='linear'))
+        model.add(Dense(10, activation='relu'))
         # Output Layer
         model.add(Dense(1, activation='linear'))  # 1 output: height (estimated)
         # Initially the network outputs values centered at zero
