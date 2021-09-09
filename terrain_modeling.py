@@ -1,3 +1,6 @@
+from helper_methods import *
+import sys
+
 #!/usr/bin/python
 
 from helper_methods import *
@@ -15,16 +18,16 @@ def run():
 
     output_folder = 'output/'
     input_folder = 'terrain/'
-    tiff_files = [# 'Appalachian_State_0.1deg.tiff',
-                  # 'Appalachian_State_1.0deg.tiff',
-                  # 'Appalachian_State_2.0deg.tiff',
-                  # 'Grand_Canyon_0.1deg.tiff',
-                  # 'Grand_Canyon_1.0deg.tiff',
-                  'Grand_Canyon_2.0deg.tiff',
-                  # 'NC_Coast_1.0deg.tiff',
-                  # 'NC_Coast_2.0deg.tiff',
-                  # 'NC_Coast_3.0deg.tiff'
-                  ]
+
+    tiff_files = [#'Appalachian_State_0.1deg.tiff',
+                  #'Appalachian_State_1.0deg.tiff',
+                  #'Appalachian_State_2.0deg.tiff',
+                  'Grand_Canyon_0.1deg.tiff',
+                  'Grand_Canyon_1.0deg.tiff',
+                  'Grand_Canyon_2.0deg.tiff',]
+                  #'NC_Coast_1.0deg.tiff',
+                  #'NC_Coast_2.0deg.tiff',
+                  #'NC_Coast_3.0deg.tiff']
 
     # Only render 1 file if asked to
     if len(sys.argv) == 2:
@@ -46,9 +49,11 @@ def run():
         # Input
         model.add(Input(2))  # 2 inputs: (x, y)
         # Layers
-        model.add(Dense(30, activation='tanh'))
-        model.add(Dense(30, activation='tanh'))
+        model.add(Dense(30, activation='relu'))
+        model.add(Dense(40, activation='tanh'))
+        #model.add(Dense(40, activation='sigmoid'))
         model.add(Dense(10, activation='relu'))
+
         # Output Layer
         model.add(Dense(1, activation='linear'))  # 1 output: height (estimated)
         # Initially the network outputs values centered at zero
@@ -62,18 +67,18 @@ def run():
 
         # Optimizers
         sgd = SGD(clipvalue=1)
-        adamx = Adamax(learning_rate=0.01)
+        adamx = Adamax(learning_rate=0.005)
 
         # Compile
-        model.compile(optimizer=adamx, loss=mae, metrics=[Entropy()])
-        model.summary()
+        model.compile(optimizer=adamx, loss=mse, metrics=[Entropy()])
+        adamx = Adamax(learning_rate=0.01)
 
         print_error(y, y.mean(), 1, 'Constant')
 
-        model.fit(x, y, batch_size=1024, verbose=1, epochs=30)
+        model.fit(x, y, batch_size=1024, verbose=1, epochs=500)
 
         save_model(model, output_path)
-        compare_images(model, x, y, output_path)
+        compare_images(model, x, y, "output")
 
 
 if __name__ == '__main__':
