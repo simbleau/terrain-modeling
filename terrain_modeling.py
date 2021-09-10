@@ -35,10 +35,13 @@ def run(files, layers, loss_function, optimizer, batch_size, epochs):
         y_mean = y.mean()
         model.add(Lambda(lambda v: v + y_mean))
 
+        # Callback function for early stopping
+        callback = tf.keras.callbacks.EarlyStopping(monitor='loss', patience=5)
+
         # Compile
         model.compile(optimizer=optimizer, loss=loss_function, metrics=[Entropy()])
         print_error(y, y.mean(), 1, 'Constant')
-        model.fit(x, y, batch_size=batch_size, verbose=1, epochs=epochs)
+        model.fit(x, y, batch_size=batch_size, verbose=1, epochs=epochs, callbacks=[callback])
 
         # Save result
         save_model(model, output_path)
