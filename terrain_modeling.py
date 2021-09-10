@@ -42,7 +42,7 @@ def run(files, layers, loss_function, optimizer, batch_size, epochs):
 
         # Save result
         save_model(model, output_path)
-        compare_images(model, x, y, "output")
+        compare_images(model, x, y, output_path)
 
 
 def run_all(layers, loss_function, optimizer, batch_size, epochs):
