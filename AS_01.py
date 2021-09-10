@@ -11,7 +11,7 @@ files = ['Appalachian_State_0.1deg.tiff']
 
 # Model
 layers = [
-    Dense(20, activation='relu'),
+    Dense(20, activation='sigmoid'),
     Dense(30, activation='tanh'),
     Dense(10, activation='relu'),
     Dense(1, activation='linear')
