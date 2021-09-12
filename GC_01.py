@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import sys
+import tensorflow as tf
 from terrain_modeling import run, run_all
 from tensorflow.keras.optimizers import *
 from tensorflow.keras.losses import *
@@ -12,7 +13,7 @@ files = ['Grand_Canyon_0.1deg.tiff']
 # Model
 layers = [
     Dense(30, activation='relu'),
-    Dense(40, activation='tanh'),
+    Dense(25, activation='tanh'),
     Dense(10, activation='relu'),
     Dense(1, activation='linear')
 ]
