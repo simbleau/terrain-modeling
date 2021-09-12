@@ -11,8 +11,9 @@ files = ['Grand_Canyon_1.0deg.tiff']
 
 # Model
 layers = [
-    Dense(30, activation='relu'),
-    Dense(40, activation='tanh'),
+    Dense(25, activation='relu'),
+    Dense(20, activation='tanh'),
+    Dense(15, activation='softplus'),
     Dense(10, activation='relu'),
     Dense(1, activation='linear')
 ]
