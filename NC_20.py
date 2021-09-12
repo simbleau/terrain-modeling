@@ -11,9 +11,9 @@ files = ['NC_Coast_2.0deg.tiff']
 
 # Model
 layers = [
-    Dense(30, activation='softmax'),
+    Dense(30, activation='relu'),
+    Dense(20, activation='sigmoid'),
     Dense(10, activation='relu'),
-    Dense(5, activation='relu'),
     Dense(1, activation='linear')
 ]
 
@@ -24,10 +24,11 @@ loss_function = MeanSquaredError()
 optimizer = Adamax(learning_rate=0.01)
 
 # Batch Size
-batch_size = 1024
+batch_size = 512
 
 # Epochs
-epochs = 25
+epochs = 500
+
 
 # Run
 if __name__ == '__main__':
