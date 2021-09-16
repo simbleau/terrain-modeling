@@ -18,7 +18,7 @@ layers = [
 ]
 
 # Loss function
-loss_function = MeanSquaredError()
+loss_function = MeanAbsoluteError()
 
 # Optimizers
 optimizer = Adamax(learning_rate=0.01)
