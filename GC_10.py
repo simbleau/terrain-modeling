@@ -13,8 +13,8 @@ files = ['Grand_Canyon_1.0deg.tiff']
 layers = [
     Dense(25, activation='relu'),
     Dense(20, activation='tanh'),
-    Dense(15, activation='softplus'),
-    Dense(10, activation='relu'),
+    Dense(14, activation='relu'),
+    Dense(10, activation='softplus'),
     Dense(1, activation='linear')
 ]
 
@@ -25,10 +25,10 @@ loss_function = MeanSquaredError()
 optimizer = Adamax(learning_rate=0.005)
 
 # Batch Size
-batch_size = 1024
+batch_size = 512
 
 # Epochs
-epochs = 500
+epochs = 1000
 
 # Run
 if __name__ == '__main__':
