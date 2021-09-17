@@ -49,7 +49,7 @@ def run(files, layers, loss_function, optimizer, batch_size, epochs):
         save_model(model, output_path)
         compare_images(model, x, y, output_path)
     # Opening a file
-    file1 = open('results.txt', 'w')
+    file1 = open('results.txt', 'w+')
     file1.write(result)
     file1.close()
     print("Results written to results.txt")
