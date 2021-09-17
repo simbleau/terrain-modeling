@@ -1,6 +1,9 @@
 #!/usr/bin/python
 
 import sys
+
+import tensorflow.keras.layers
+
 from terrain_modeling import run, run_all
 from tensorflow.keras.optimizers import *
 from tensorflow.keras.losses import *
@@ -11,8 +14,9 @@ files = ['Appalachian_State_2.0deg.tiff']
 
 # Model
 layers = [
-    Dense(20, activation='sigmoid'),
-    Dense(30, activation='tanh'),
+    Dense(20, activation='relu'),
+    Dense(10, activation='relu'),
+    Dense(10, activation='relu'),
     Dense(10, activation='relu'),
     Dense(1, activation='linear')
 ]
@@ -21,7 +25,7 @@ layers = [
 loss_function = MeanSquaredError()
 
 # Optimizers
-optimizer = Adamax(learning_rate=0.005)
+optimizer = Adamax(learning_rate=0.01)
 
 # Batch Size
 batch_size = 512
