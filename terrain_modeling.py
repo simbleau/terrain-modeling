@@ -42,7 +42,7 @@ def run(files, layers, loss_function, optimizer, batch_size, epochs):
         # Compile
         model.compile(optimizer=optimizer, loss=loss_function, metrics=[Entropy()])
         improvement = print_error(y, y.mean(), 1, 'Constant')
-        result = "File: " + file + "\n\tLayers: " + layers + "\n\tLoss Function: " + loss_function + "\n\tImprovement: " + improvement + "\n\n"
+        result = "File: " + file + "\n\tLayers: " + str(layers) + "\n\tLoss Function: " + loss_function.name + "\n\tImprovement: " + str(improvement) + "\n\n"
         model.fit(x, y, batch_size=batch_size, verbose=1, epochs=epochs, callbacks=[callback])
 
         # Save result
