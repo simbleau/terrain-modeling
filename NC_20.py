@@ -11,8 +11,10 @@ files = ['NC_Coast_2.0deg.tiff']
 
 # Model
 layers = [
-    Dense(30, activation='relu'),
-    Dense(20, activation='sigmoid'),
+    Dense(20, activation='relu'),
+    Dense(10, activation='relu'),
+    Dense(10, activation='relu'),
+    Dense(10, activation='relu'),
     Dense(10, activation='relu'),
     Dense(1, activation='linear')
 ]
