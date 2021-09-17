@@ -97,6 +97,7 @@ def print_error(y_true, y_pred, num_params, name):
     improvement = 1 - total/constant_bits
     print(f'{name:8s} MSE: {loss:11.4f}, error bits/px: {bits/len(e):11.4f}, model bits/px: {desc/len(e):11.4f}, '
           f'total bits/px: {total/len(e):11.4f}, improvement = {improvement:.2%}')
+    return improvement
 
 
 # bogus
