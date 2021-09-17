@@ -11,17 +11,19 @@ files = ['Appalachian_State_1.0deg.tiff']
 
 # Model
 layers = [
-    Dense(20, activation='sigmoid'),
-    Dense(30, activation='tanh'),
+    Dense(10, activation='relu'),
+    Dense(10, activation='relu'),
+    Dense(10, activation='relu'),
+    Dense(10, activation='relu'),
     Dense(10, activation='relu'),
     Dense(1, activation='linear')
 ]
 
 # Loss function
-loss_function = MeanSquaredError()
+loss_function = MeanAbsoluteError()
 
 # Optimizers
-optimizer = Adamax(learning_rate=0.005)
+optimizer = Adamax(learning_rate=0.01)
 
 # Batch Size
 batch_size = 512
