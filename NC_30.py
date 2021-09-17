@@ -1,6 +1,9 @@
 #!/usr/bin/python
 
 import sys
+
+import tensorflow.keras.layers
+
 from terrain_modeling import run, run_all
 from tensorflow.keras.optimizers import *
 from tensorflow.keras.losses import *
@@ -11,8 +14,9 @@ files = ['NC_Coast_3.0deg.tiff']
 
 # Model
 layers = [
-    Dense(30, activation='relu'),
-    Dense(20, activation='sigmoid'),
+    Dense(20, activation='relu'),
+    Dense(10, activation='relu'),
+    Dense(10, activation='relu'),
     Dense(10, activation='relu'),
     Dense(1, activation='linear')
 ]
