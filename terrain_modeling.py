@@ -13,6 +13,7 @@ def run(files, layers, loss_function, optimizer, batch_size, epochs):
 
     output_folder = 'output/'
     input_folder = 'terrain/'
+    result = ""
     for file in files:
         # Clear backend for new file
         keras.backend.clear_session()
@@ -40,12 +41,18 @@ def run(files, layers, loss_function, optimizer, batch_size, epochs):
 
         # Compile
         model.compile(optimizer=optimizer, loss=loss_function, metrics=[Entropy()])
-        print_error(y, y.mean(), 1, 'Constant')
+        improvement = print_error(y, y.mean(), 1, 'Constant')
+        result = "File: " + file + "\n\tLayers: " + layers + "\n\tLoss Function: " + loss_function + "\n\tImprovement: " + improvement
         model.fit(x, y, batch_size=batch_size, verbose=1, epochs=epochs, callbacks=[callback])
 
         # Save result
         save_model(model, output_path)
         compare_images(model, x, y, output_path)
+    # Opening a file
+    file1 = open('results.txt', 'w')
+    file1.write(result)
+    file1.close()
+    print("Results written to results.txt")
 
 
 def run_all(layers, loss_function, optimizer, batch_size, epochs):
