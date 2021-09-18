@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import sys
+import itertools
 from terrain_modeling import run, run_all
 from tensorflow.keras.optimizers import *
 from tensorflow.keras.losses import *
@@ -20,8 +20,8 @@ files = [
 ]
 
 # Hyper-parameters for Grid Search
-layer_counts = [3, 5, 7]
-neuron_counts = [5, 10, 20]
+layer_counts = [3, 4]
+neuron_counts = [5, 10, 20, 30] # The amount of neuron counts must be equal to or lower of the highest layer count (=4)
 loss_functions = [MeanSquaredError(), MeanAbsoluteError()]
 
 # Constants - ACCEPTABLE ERROR
@@ -31,12 +31,27 @@ epochs = 1000
 
 # Run grid search
 if __name__ == '__main__':
-    for layer_count in layer_counts:
-        for neuron_count in neuron_counts:
-            for loss_function in loss_functions:
-                # Create layers
-                layers = []
-                for i in range(layer_count):
-                    layers.append(Dense(neuron_count, activation='relu'))
-                run(files, layers, loss_function,
-                    optimizer, batch_size, epochs, False)
+    permutations = True
+
+    if permutations:
+        for loss_function in loss_functions:
+            print("le")
+            for layer_count in layer_counts:
+                print(layer_count)
+                for perm in itertools.permutations(neuron_counts, layer_count):
+                    layers = []
+                    for neuron_amt in perm:
+                        layers.append(Dense(neuron_amt, activation='relu'))
+                    run(files, layers, loss_function,
+                        optimizer, batch_size, epochs, False)
+
+    else:
+        for loss_function in loss_functions:
+            for layer_count in layer_counts:
+                for neuron_count in neuron_counts:
+                    # Create layers
+                    layers = []
+                    for i in range(layer_count):
+                        layers.append(Dense(neuron_count, activation='relu'))
+                    run(files, layers, loss_function,
+                        optimizer, batch_size, epochs, False)
