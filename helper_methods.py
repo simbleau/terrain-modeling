@@ -70,7 +70,6 @@ def get_xy(tiff_file):
     return x, y
 
 
-# bogus
 def print_error(y_true, y_pred, num_params, name):
     """
     Print performance for this model.
@@ -94,9 +93,26 @@ def print_error(y_true, y_pred, num_params, name):
     # comparison to a model that estimated zero for every pixel
     constant_bits = error_bits(y_true)
     # percent improvement
-    improvement = 1 - total/constant_bits
-    print(f'{name:8s} MSE: {loss:11.4f}, error bits/px: {bits/len(e):11.4f}, model bits/px: {desc/len(e):11.4f}, '
-          f'total bits/px: {total/len(e):11.4f}, improvement = {improvement:.2%}')
+    improvement = 1 - total / constant_bits
+    print(f'{name:8s} MSE: {loss:11.4f}, error bits/px: {bits / len(e):11.4f}, model bits/px: {desc / len(e):11.4f}, '
+          f'total bits/px: {total / len(e):11.4f}, improvement = {improvement:.2%}')
+
+
+def get_improvement(model, x, y):
+    """
+    Returns the improvement. Written by Abdel.
+    """
+    # The model estimates (same shape as 'y')
+    y_hat = model.predict(x)
+    y_hat[np.isnan(y_hat)] = 0
+    error = y_hat - y
+    err_bits = error_bits(error)
+    num_trainable_params = layer_utils.count_params(
+        model.trainable_weights)
+    mod_bits = 32 * num_trainable_params
+    orig_bits = error_bits(y)
+
+    improvement = 100 * (1 - (mod_bits + err_bits) / orig_bits)
     return improvement
 
 
@@ -126,7 +142,7 @@ def compare_images(model, x, y, output_path):
     y_hat = model.predict(x)
     y_hat[np.isnan(y_hat)] = 0
     error = y_hat - y
-    mse = np.mean(error**2)
+    mse = np.mean(error ** 2)
     err_bits = error_bits(error)
     num_trainable_params = layer_utils.count_params(model.trainable_weights)
     mod_bits = 32 * num_trainable_params
@@ -138,7 +154,7 @@ def compare_images(model, x, y, output_path):
     print_error(y, LinearRegression().fit(x, y).predict(x), 3, 'Linear')
     print_error(y, y_hat, layer_utils.count_params(model.trainable_weights), 'Model')
 
-    improvement = 1 - (mod_bits + err_bits)/orig_bits
+    improvement = 1 - (mod_bits + err_bits) / orig_bits
 
     # The minimum and maximum elevation over original and estimated image
     vmin = min(y.min(), y_hat.min())
@@ -156,16 +172,16 @@ def compare_images(model, x, y, output_path):
     # render and label the model estimate
     ax[0].imshow(y_hat.reshape((360, 360)), vmin=vmin, vmax=vmax, extent=extent)
     ax[0].set_title(f'Model Estimate MSE = {mse:.1f}\n'
-                    f'entropy = {err_bits/len(y):.4f}, model_bits/px = {mod_bits/len(y):.4f}\n'
-                    f'total bits/px = {(err_bits + mod_bits)/len(y):.4f}, '
+                    f'entropy = {err_bits / len(y):.4f}, model_bits/px = {mod_bits / len(y):.4f}\n'
+                    f'total bits/px = {(err_bits + mod_bits) / len(y):.4f}, '
                     f'improvement = {improvement:.2%}')
 
     # render and label the original
     im1 = ax[1].imshow(y.reshape((360, 360)), vmin=vmin, vmax=vmax, extent=extent)
     ax[1].set_title('Original')
-    ax[1].set_title(f'PNG Estimate MSE = {np.mean(y**2):.1f}\n'
-                    f'entropy = {orig_bits/len(y):.4f}, model_bits/px = {0:.4f}\n'
-                    f'total bits/px = {orig_bits/len(y):.4f}, '
+    ax[1].set_title(f'PNG Estimate MSE = {np.mean(y ** 2):.1f}\n'
+                    f'entropy = {orig_bits / len(y):.4f}, model_bits/px = {0:.4f}\n'
+                    f'total bits/px = {orig_bits / len(y):.4f}, '
                     f'improvement = {0:.2%}')
 
     # add a color bar in a new set of axes
@@ -198,7 +214,7 @@ class Entropy(keras.metrics.Metric):
         # initialize a length 2*max_error+1 vector to hold the errors from -max_error to max_error
         self.error_counts = self.add_weight(
             name='error_counts',
-            shape=(2*self.max_error+1,),
+            shape=(2 * self.max_error + 1,),
             initializer='zeros',
             dtype='int32'
         )
@@ -233,8 +249,8 @@ class Entropy(keras.metrics.Metric):
         # count the occurence of each error value
         error_counts = tf.math.bincount(
             error,
-            minlength=2*self.max_error+1,
-            maxlength=2*self.max_error+1
+            minlength=2 * self.max_error + 1,
+            maxlength=2 * self.max_error + 1
         )
         # update total counts
         self.error_counts.assign_add(error_counts)
@@ -251,7 +267,7 @@ class Entropy(keras.metrics.Metric):
         # replace zeros with ones for entropy computation (avoid log(0))
         probabilities = tf.where(tf.equal(probabilities, 0), tf.ones_like(probabilities), probabilities)
         # compute entropy
-        entropy = tf.reduce_sum(-(probabilities * tf.math.log(probabilities)/tf.math.log(2.)))
+        entropy = tf.reduce_sum(-(probabilities * tf.math.log(probabilities) / tf.math.log(2.)))
         return entropy
 
     def reset_states(self):

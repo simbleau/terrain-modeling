@@ -6,11 +6,18 @@ import tensorflow
 from tensorflow.keras.models import *
 from tensorflow.keras.layers import *
 
-def run(files, layers, loss_function, optimizer, batch_size, epochs):
+
+def run(files, layers, loss_function, optimizer, batch_size, epochs, save):
+    # Printing Debug information
     num_gpus = len(tensorflow.config.experimental.list_physical_devices('GPU'))
     using_gpus = num_gpus >= 1
     print(f"Using GPU: {using_gpus}\n")
 
+    # Debug variables
+    layers_str = "[" + ",".join(str(x.units) for x in layers) + "]"
+    loss_function_name = loss_function.name
+
+    # Begin run
     output_folder = 'output/'
     input_folder = 'terrain/'
     result = ""
@@ -18,9 +25,16 @@ def run(files, layers, loss_function, optimizer, batch_size, epochs):
         # Clear backend for new file
         keras.backend.clear_session()
 
-        print(f"Working on file: {file}")
         input_path = input_folder + file
         output_path = output_folder + file + '.h5'
+
+        # Print debug info before starting
+        print(f"Working on file: {file}")
+        if save:
+            print(f"Output: {output_path}")
+        print(f"Hyper-parameters:\n\t" +
+              f"Layers: {layers_str}\n\tLoss Function: {loss_function_name}\n\tBatch Size: {batch_size}\n\t" +
+              f"Epochs: {epochs}")
 
         # Get x and y
         x, y = get_xy(input_path)
@@ -32,30 +46,40 @@ def run(files, layers, loss_function, optimizer, batch_size, epochs):
         # Hidden Layers
         for layer in layers:
             model.add(layer)
+
+        model.add(Dense(1, activation='relu', name='output'))
         # Output Layer
         y_mean = y.mean()
         model.add(Lambda(lambda v: v + y_mean))
 
         # Callback function for early stopping
-        callback = tf.keras.callbacks.EarlyStopping(monitor='loss', patience=15)
+        callback = tf.keras.callbacks.EarlyStopping(
+            monitor='loss', patience=15)
 
         # Compile
-        model.compile(optimizer=optimizer, loss=loss_function, metrics=[Entropy()])
-        improvement = print_error(y, y.mean(), 1, 'Constant')
-        result = "File: " + file + "\n\tLayers: " + str(layers) + "\n\tLoss Function: " + loss_function.name + "\n\tImprovement: " + str(improvement) + "\n\n"
-        model.fit(x, y, batch_size=batch_size, verbose=1, epochs=epochs, callbacks=[callback])
+        model.compile(optimizer=optimizer,
+                      loss=loss_function, metrics=[Entropy()])
+        print_error(y, y.mean(), 1, 'Constant')
+
+        model.fit(x, y, batch_size=batch_size, verbose=1,
+                  epochs=epochs, callbacks=[callback])
+
+        improvement = get_improvement(model, x, y)
+        result += f"File: {file}\n\tLayers: {layers_str}\n\tLoss Function: {loss_function_name}\n\tBatch Size: {batch_size}\n\tEpochs: {epochs}\n\tImprovement: {improvement}\n"
 
         # Save result
-        save_model(model, output_path)
-        compare_images(model, x, y, output_path)
-    # Opening a file
-    file1 = open('results.txt', 'w+')
-    file1.write(result)
-    file1.close()
-    print("Results written to results.txt")
+        if save:
+            model.save(output_path)
+            compare_images(model, x, y, output_path)
+
+        # Write results
+        file1 = open('results.txt', 'a+')
+        file1.write(result)
+        file1.close()
+        print("Results appended.\n")
 
 
-def run_all(layers, loss_function, optimizer, batch_size, epochs):
+def run_all(layers, loss_function, optimizer, batch_size, epochs, save):
     all_files = ['Appalachian_State_0.1deg.tiff',
                  'Appalachian_State_1.0deg.tiff',
                  'Appalachian_State_2.0deg.tiff',
@@ -65,4 +89,4 @@ def run_all(layers, loss_function, optimizer, batch_size, epochs):
                  'NC_Coast_1.0deg.tiff',
                  'NC_Coast_2.0deg.tiff',
                  'NC_Coast_3.0deg.tiff']
-    run(all_files, layers, loss_function, optimizer, batch_size, epochs)
+    run(all_files, layers, loss_function, optimizer, batch_size, epochs, save)

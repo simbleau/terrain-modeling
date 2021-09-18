@@ -35,6 +35,6 @@ epochs = 1000
 if __name__ == '__main__':
     # Use -a flag in CLI args to run this model on all files.
     if len(sys.argv) == 2 and sys.argv[1] == "-a":
-        run_all(layers, loss_function, optimizer, batch_size, epochs)
+        run_all(layers, loss_function, optimizer, batch_size, epochs, True)
     else:
-        run(files, layers, loss_function, optimizer, batch_size, epochs)
+        run(files, layers, loss_function, optimizer, batch_size, epochs, True)
