@@ -26,8 +26,8 @@ loss_functions = [MeanSquaredError(), MeanAbsoluteError()]
 
 # Constants - ACCEPTABLE ERROR
 optimizer = Adamax(learning_rate=0.01)
-batch_size = 4098
-epochs = 1
+batch_size = 1024
+epochs = 1000
 
 # Run grid search
 if __name__ == '__main__':
