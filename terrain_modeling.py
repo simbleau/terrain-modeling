@@ -78,8 +78,8 @@ def run(files, layers, loss_function, optimizer, batch_size, epochs, save):
         file1.write(result)
         file1.close()
 
-        csv_result = f"{file},{layers_str},{loss_function_name},{batch_size},{epochs},{improvement}\n"
-        file1 = open('results.cvs', 'a+')
+        csv_result = f"{file},{layers_str},{loss_function_name},{batch_size},{epochs},{number_of_epochs_ran},{improvement}\n"
+        file1 = open('results.csv', 'a+')
         file1.write(csv_result)
         file1.close()
 

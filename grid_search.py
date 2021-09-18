@@ -20,14 +20,14 @@ files = [
 ]
 
 # Hyper-parameters for Grid Search
-layer_counts = [3, 4, 5]
-neuron_counts = [5, 10, 20, 30]
-loss_functions = [MeanSquaredError(), MeanAbsoluteError()]
+layer_counts = [3, 4]
+neuron_counts = [10, 20, 30]
+loss_functions = [MeanSquaredError()]
 
 # Constants - ACCEPTABLE ERROR
 optimizer = Adamax(learning_rate=0.01)
 batch_size = 1024
-epochs = 1000
+epochs = 200
 
 # Run grid search
 if __name__ == '__main__':
