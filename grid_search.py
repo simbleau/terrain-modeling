@@ -30,7 +30,6 @@ batch_size = 1024
 epochs = 1000
 
 # Run grid search
-counter = 0
 if __name__ == '__main__':
   for layer_count in layer_counts:
     for neuron_count in neuron_counts:
@@ -38,6 +37,5 @@ if __name__ == '__main__':
         # Create layers
         layers = []
         for i in range(layer_count):
-          layers.append(Dense(neuron_count, activation='relu'))
-        run(files, layers, loss_function, optimizer, batch_size, epochs, counter)
-        counter += 1
+          layer.append(Dense(neuron_count, activation='relu'))
+        run(files, layers, loss_function, optimizer, batch_size, epochs)

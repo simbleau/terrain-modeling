@@ -6,8 +6,7 @@ import tensorflow
 from tensorflow.keras.models import *
 from tensorflow.keras.layers import *
 
-
-def run(files, layers, loss_function, optimizer, batch_size, epochs, counter):
+def run(files, layers, loss_function, optimizer, batch_size, epochs):
     num_gpus = len(tensorflow.config.experimental.list_physical_devices('GPU'))
     using_gpus = num_gpus >= 1
     print(f"Using GPU: {using_gpus}\n")
@@ -33,8 +32,6 @@ def run(files, layers, loss_function, optimizer, batch_size, epochs, counter):
         # Hidden Layers
         for layer in layers:
             model.add(layer)
-
-        model.add(Dense(1, activation='relu', name='output'))
         # Output Layer
         y_mean = y.mean()
         model.add(Lambda(lambda v: v + y_mean))
@@ -45,32 +42,14 @@ def run(files, layers, loss_function, optimizer, batch_size, epochs, counter):
         # Compile
         model.compile(optimizer=optimizer, loss=loss_function, metrics=[Entropy()])
         improvement = print_error(y, y.mean(), 1, 'Constant')
-
-        layerstr = ""
-        for layer in layers:
-            layerstr += " Layer: " + str(layer.units)
-
+        result = "File: " + file + "\n\tLayers: " + str(layers) + "\n\tLoss Function: " + loss_function.name + "\n\tImprovement: " + str(improvement) + "\n\n"
         model.fit(x, y, batch_size=batch_size, verbose=1, epochs=epochs, callbacks=[callback])
 
-        # The model estimates (same shape as 'y')
-        y_hat = model.predict(x)
-        y_hat[np.isnan(y_hat)] = 0
-        error = y_hat - y
-        err_bits = error_bits(error)
-        num_trainable_params = layer_utils.count_params(model.trainable_weights)
-        mod_bits = 32 * num_trainable_params
-        orig_bits = error_bits(y)
-
-        improvement = 100*(1 - (mod_bits + err_bits) / orig_bits)
-        result += "File: " + file + "\n\tLayers:" + layerstr + "\n\tLoss Function: " + loss_function.name + "\n\tImprovement: " + str(improvement) + "\n\n"
-
         # Save result
-        # model.save(output_path)
-
-        compare_images(model, x, y, output_path + str(counter))
-
-    # Opening a files
-    file1 = open('results.txt', 'a+')
+        save_model(model, output_path)
+        compare_images(model, x, y, output_path)
+    # Opening a file
+    file1 = open('results.txt', 'w+')
     file1.write(result)
     file1.close()
     print("Results written to results.txt")
