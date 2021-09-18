@@ -8,20 +8,20 @@ from tensorflow.keras.layers import *
 
 # Files to run
 files = [
-    'Appalachian_State_0.1deg.tiff',
-    'Appalachian_State_1.0deg.tiff',
-    'Appalachian_State_2.0deg.tiff',
+    # 'Appalachian_State_0.1deg.tiff',
+    # 'Appalachian_State_1.0deg.tiff',
+    # 'Appalachian_State_2.0deg.tiff',
     'Grand_Canyon_0.1deg.tiff',
     'Grand_Canyon_1.0deg.tiff',
     'Grand_Canyon_2.0deg.tiff',
-    'NC_Coast_1.0deg.tiff',
-    'NC_Coast_2.0deg.tiff',
-    'NC_Coast_3.0deg.tiff'
+    # 'NC_Coast_1.0deg.tiff',
+    # 'NC_Coast_2.0deg.tiff',
+    # 'NC_Coast_3.0deg.tiff'
 ]
 
 # Hyper-parameters for Grid Search
-layer_counts = [3, 4]
-neuron_counts = [5, 10, 20, 30] # The amount of neuron counts must be equal to or lower of the highest layer count (=4)
+layer_counts = [3, 4, 5]
+neuron_counts = [5, 10, 20, 30]
 loss_functions = [MeanSquaredError(), MeanAbsoluteError()]
 
 # Constants - ACCEPTABLE ERROR
@@ -39,7 +39,8 @@ if __name__ == '__main__':
                 print("le")
                 for layer_count in layer_counts:
                     print(layer_count)
-                    for perm in itertools.permutations(neuron_counts, layer_count):
+                    perms = list(itertools.product(neuron_counts, repeat=layer_count))
+                    for perm in perms:
                         layers = []
                         for neuron_amt in perm:
                             layers.append(Dense(neuron_amt, activation='relu'))

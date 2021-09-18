@@ -47,7 +47,7 @@ def run(files, layers, loss_function, optimizer, batch_size, epochs, save):
         for layer in layers:
             model.add(layer)
 
-        model.add(Dense(1, activation='relu', name='output'))
+        model.add(Dense(1, activation='linear', name='output'))
         # Output Layer
         y_mean = y.mean()
         model.add(Lambda(lambda v: v + y_mean))
@@ -61,8 +61,9 @@ def run(files, layers, loss_function, optimizer, batch_size, epochs, save):
                       loss=loss_function, metrics=[Entropy()])
         print_error(y, y.mean(), 1, 'Constant')
 
-        model.fit(x, y, batch_size=batch_size, verbose=1,
+        history = model.fit(x, y, batch_size=batch_size, verbose=2,
                   epochs=epochs, callbacks=[callback])
+        number_of_epochs_ran = len(history.history['loss'])
 
         # Save result
         if save:
@@ -72,7 +73,7 @@ def run(files, layers, loss_function, optimizer, batch_size, epochs, save):
         # Write results and CSV
         improvement = get_improvement(model, x, y)
 
-        result = f"File: {file}\n\tLayers: {layers_str}\n\tLoss Function: {loss_function_name}\n\tBatch Size: {batch_size}\n\tEpochs: {epochs}\n\tImprovement: {improvement}\n"
+        result = f"File: {file}\n\tLayers: {layers_str}\n\tLoss Function: {loss_function_name}\n\tBatch Size: {batch_size}\n\tMax epochs: {epochs}\n\tEpochs ran: {number_of_epochs_ran}\n\tImprovement: {improvement}\n"
         file1 = open('results.txt', 'a+')
         file1.write(result)
         file1.close()
