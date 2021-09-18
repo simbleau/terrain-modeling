@@ -20,7 +20,7 @@ def run(files, layers, loss_function, optimizer, batch_size, epochs, save):
     # Begin run
     output_folder = 'output/'
     input_folder = 'terrain/'
-    result = ""
+
     for file in files:
         # Clear backend for new file
         keras.backend.clear_session()
@@ -64,18 +64,24 @@ def run(files, layers, loss_function, optimizer, batch_size, epochs, save):
         model.fit(x, y, batch_size=batch_size, verbose=1,
                   epochs=epochs, callbacks=[callback])
 
-        improvement = get_improvement(model, x, y)
-        result += f"File: {file}\n\tLayers: {layers_str}\n\tLoss Function: {loss_function_name}\n\tBatch Size: {batch_size}\n\tEpochs: {epochs}\n\tImprovement: {improvement}\n"
-
         # Save result
         if save:
             model.save(output_path)
             compare_images(model, x, y, output_path)
 
-        # Write results
+        # Write results and CSV
+        improvement = get_improvement(model, x, y)
+
+        result = f"File: {file}\n\tLayers: {layers_str}\n\tLoss Function: {loss_function_name}\n\tBatch Size: {batch_size}\n\tEpochs: {epochs}\n\tImprovement: {improvement}\n"
         file1 = open('results.txt', 'a+')
         file1.write(result)
         file1.close()
+
+        csv_result = f"{file},{layers_str},{loss_function_name},{batch_size},{epochs},{improvement}\n"
+        file1 = open('results.cvs', 'a+')
+        file1.write(csv_result)
+        file1.close()
+
         print("Results appended.\n")
 
 
