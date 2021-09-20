@@ -11,11 +11,11 @@ files = ['Grand_Canyon_1.0deg.tiff']
 
 # Model
 layers = [
-    Dense(20, activation='relu'),
-    Dense(10, activation='relu'),
-    Dense(10, activation='relu'),
-    Dense(10, activation='relu'),
-    Dense(10, activation='relu'),
+    Dense(20, activation='elu'),
+    Dense(10, activation='elu'),
+    Dense(10, activation='elu'),
+    Dense(10, activation='elu'),
+    Dense(10, activation='elu'),
     Dense(1, activation='linear')
 ]
 
@@ -23,7 +23,7 @@ layers = [
 loss_function = MeanAbsoluteError()
 
 # Optimizers
-optimizer = Adamax(learning_rate=0.005)
+optimizer = Adamax(learning_rate=0.01)
 
 # Batch Size
 batch_size = 512
